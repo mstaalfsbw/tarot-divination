@@ -1,0 +1,361 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', '微软雅黑', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    overflow: hidden;
+    color: #333;
+}
+
+.app-container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ========== 视频和手势检测 ========== */
+.gesture-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#video {
+    display: none;
+}
+
+#gesture-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* ========== 问题选择页 ========== */
+.question-page {
+    width: 90%;
+    max-width: 800px;
+    background: white;
+    border-radius: 15px;
+    padding: 40px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+.question-page h1 {
+    font-size: 32px;
+    margin-bottom: 30px;
+    color: #667eea;
+}
+
+.question-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.question-btn {
+    padding: 15px;
+    border: 2px solid #667eea;
+    background: white;
+    color: #667eea;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    font-weight: bold;
+}
+
+.question-btn:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-2px);
+}
+
+.question-btn.active {
+    background: #667eea;
+    color: white;
+}
+
+.custom-input {
+    width: 100%;
+    padding: 12px;
+    margin: 15px 0;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.custom-input:focus {
+    outline: none;
+    border-color: #667eea;
+}
+
+.confirm-btn {
+    padding: 15px 40px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.confirm-btn:hover {
+    transform: scale(1.05);
+}
+
+.confirm-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ========== 过场动画 ========== */
+.animation-page {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+#energy-canvas {
+    width: 400px;
+    height: 400px;
+    margin-bottom: 30px;
+}
+
+.animation-text {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 20px;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+.tap-hint {
+    font-size: 14px;
+    margin-top: 30px;
+    opacity: 0.8;
+    animation: bounce 1s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* ========== 塔罗牌游戏页 ========== */
+.game-page {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+}
+
+.game-header {
+    text-align: center;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.game-header h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.spread-area {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+.card {
+    width: 80px;
+    height: 120px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    position: absolute;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.1) translateY(-10px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+}
+
+.card.selected {
+    background: #667eea;
+    color: white;
+    border: 2px solid gold;
+}
+
+.card img {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.gesture-info {
+    color: white;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.gesture-info .hand-position {
+    display: inline-block;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 10px 20px;
+    border-radius: 20px;
+    margin-top: 10px;
+}
+
+/* ========== 牌意解读页 ========== */
+.reading-page {
+    width: 100%;
+    height: 100%;
+    background: white;
+    overflow-y: auto;
+    padding: 40px;
+}
+
+.reading-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.reading-header h1 {
+    font-size: 32px;
+    color: #667eea;
+    margin-bottom: 10px;
+}
+
+.reading-header p {
+    color: #666;
+    font-size: 16px;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.card-meaning {
+    background: #f8f9fa;
+    border-left: 4px solid #667eea;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.card-meaning h3 {
+    font-size: 18px;
+    color: #667eea;
+    margin-bottom: 10px;
+}
+
+.card-meaning .position {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 10px;
+}
+
+.card-meaning .meaning {
+    font-size: 14px;
+    color: #333;
+    line-height: 1.6;
+}
+
+.overall-reading {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.overall-reading h2 {
+    margin-bottom: 15px;
+}
+
+.overall-reading p {
+    line-height: 1.8;
+    font-size: 16px;
+}
+
+.reading-action {
+    text-align: center;
+    margin-top: 40px;
+}
+
+.restart-btn {
+    padding: 15px 40px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+.restart-btn:hover {
+    transform: scale(1.05);
+}
+
+/* ========== 响应式设计 ========== */
+@media (max-width: 768px) {
+    .question-page {
+        padding: 20px;
+    }
+
+    .question-page h1 {
+        font-size: 24px;
+    }
+
+    .card {
+        width: 60px;
+        height: 90px;
+    }
+
+    .cards-grid {
+        grid-template-columns: 1fr;
+    }
+}
